@@ -9,7 +9,6 @@ require ('filetypes')
 
 require "paq" {
         "savq/paq-nvim";
-        "folke/tokyonight.nvim";
         "nvim-lualine/lualine.nvim";
         "terryma/vim-multiple-cursors";
         "neovim/nvim-lspconfig";
@@ -24,6 +23,9 @@ require "paq" {
         "hrsh7th/cmp-vsnip";
         "hrsh7th/vim-vsnip";
         "ntpeters/vim-better-whitespace";
+        -- Colourschemes
+        "folke/tokyonight.nvim";
+        "junegunn/seoul256.vim"
 }
 -- LSPs
 local servers = { 'svls', 'rust_analyzer', 'clangd' }
@@ -42,8 +44,9 @@ vim.g.strip_whitespace_on_save = 1
 
 vim.g.rainbow_active = 1
 -- Colors
-vim.g.tokyonight_style = "storm"
-vim.cmd[[colorscheme tokyonight]]
+--vim.g.tokyonight_style = "storm"
+--vim.cmd[[colorscheme tokyonight]]
+vim.cmd[[colorscheme seoul256]]
 
 -- lualine
 require('lualine').setup {
