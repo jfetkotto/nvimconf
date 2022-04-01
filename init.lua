@@ -25,7 +25,8 @@ require "paq" {
         "ntpeters/vim-better-whitespace";
         -- Colourschemes
         "folke/tokyonight.nvim";
-        "junegunn/seoul256.vim"
+        "junegunn/seoul256.vim";
+        "nanotech/jellybeans.vim";
 }
 -- LSPs
 local servers = { 'svls', 'rust_analyzer', 'clangd' }
@@ -46,7 +47,7 @@ vim.g.rainbow_active = 1
 -- Colors
 --vim.g.tokyonight_style = "storm"
 --vim.cmd[[colorscheme tokyonight]]
-vim.cmd[[colorscheme seoul256]]
+vim.cmd[[colorscheme jellybeans]]
 
 -- lualine
 require('lualine').setup {
