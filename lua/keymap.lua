@@ -6,21 +6,21 @@ map('n', '<Space>', '<NOP>', {noremap = true, silent = true})
 
 
 -- Hardmode
-map('n', '<Up>', '<NOP>', {noremap = true})
-map('n', '<Down>', '<NOP>', {noremap = true})
-map('n', '<Left>', '<NOP>', {noremap = true})
-map('n', '<Right>', '<NOP>', {noremap = true})
+--map('n', '<Up>', '<NOP>', {noremap = true})
+--map('n', '<Down>', '<NOP>', {noremap = true})
+--map('n', '<Left>', '<NOP>', {noremap = true})
+--map('n', '<Right>', '<NOP>', {noremap = true})
 
-map('i', '<Up>', '<NOP>', {noremap = true})
-map('i', '<Down>', '<NOP>', {noremap = true})
-map('i', '<Left>', '<NOP>', {noremap = true})
-map('i', '<Right>', '<NOP>', {noremap = true})
+--map('i', '<Up>', '<NOP>', {noremap = true})
+--map('i', '<Down>', '<NOP>', {noremap = true})
+--map('i', '<Left>', '<NOP>', {noremap = true})
+--map('i', '<Right>', '<NOP>', {noremap = true})
 
 
-map('n', '<PageDown>', '<NOP>', {noremap = true})
-map('n', '<PageUp>', '<NOP>', {noremap = true})
-map('i', '<PageUp >', '<NOP>', {noremap = true})
-map('i', '<PageDown>', '<NOP>',{noremap = true})
+--map('n', '<PageDown>', '<NOP>', {noremap = true})
+--map('n', '<PageUp>', '<NOP>', {noremap = true})
+--map('i', '<PageUp >', '<NOP>', {noremap = true})
+--map('i', '<PageDown>', '<NOP>',{noremap = true})
 
 map('n', '<leader>w', ':bn<CR>', {noremap = true})
 map('n', '<leader>q', ':bdelete<CR>', {noremap = true})

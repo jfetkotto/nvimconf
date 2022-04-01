@@ -4,6 +4,8 @@
 
 require ('base') -- Basic Vim settings
 require ('keymap')
+require ('filetypes')
+
 
 require "paq" {
         "savq/paq-nvim";
@@ -24,7 +26,7 @@ require "paq" {
         "ntpeters/vim-better-whitespace";
 }
 -- LSPs
-local servers = { 'svls' }
+local servers = { 'svls', 'rust_analyzer', 'clangd' }
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
     on_attach = on_attach,
