@@ -1,0 +1,130 @@
+{
+  "section": {
+    "prefix": "section",
+    "body": [
+      "// {{{ ${1:Section}",
+      "$2",
+      "// }}} ${1:Section}",
+      "$0"
+    ],
+    "description": "Foldable section"
+  },
+
+  "dff_norst_noen": {
+    "prefix": "dff_norst_noen",
+    "body": [
+      "// DFF: no reset, no enable",
+      "always_ff @(posedge ${1:/* CLOCK */})",
+      "  ${2:/* Q */} <= ${3:/* D */};",
+      "$0"
+    ],
+    "description": "DFF with no reset and no enable"
+  },
+
+  "dff_arst_noen": {
+    "prefix": "dff_arst_noen",
+    "body": [
+      "// DFF: async reset, no enable",
+      "always_ff @(posedge ${1:/* CLOCK */}, posedge ${2:/* RESET */})",
+      "  if (${2:/* RESET */})",
+      "    ${3:/* Q */} <= ${4:/* RESET VALUE */};",
+      "  else",
+      "    ${3:/* Q */} <= ${5:/* D */};",
+      "$0"
+    ],
+    "description": "DFF with async reset and no enable"
+  },
+
+  "dff_srst_noen": {
+    "prefix": "dff_srst_noen",
+    "body": [
+      "// DFF: synch reset, no enable",
+      "always_ff @(posedge ${1:/* CLOCK */})",
+      "  if (${2:/* RESET */})",
+      "    ${3:/* Q */} <= ${4:/* RESET VALUE */};",
+      "  else",
+      "    ${3:/* Q */} <= ${5:/* D */};",
+      "$0"
+    ],
+    "description": "DFF with synch reset and no enable"
+  },
+
+  "dff_arst_en": {
+    "prefix": "dff_arst_en",
+    "body" : [
+      "// DFF: async reset, enable",
+      "always_ff @(posedge ${1:/* CLOCK */}, posedge ${2:/* RESET */})",
+      "  if (${2:/* RESET */})",
+      "    ${3:/* Q */} <= ${4:/* RESET VALUE*/};",
+      "  else if (${5:/* ENABLE */})",
+      "    ${3:/* Q */} <= ${6:/* D */};",
+      "  else",
+      "    ${3:/* Q */} <= ${3: /* Q */};",
+      "$0"
+    ],
+    "description": "DFF with async reset and enable"
+  },
+
+  "dff_srst_en": {
+    "prefix": "dff_srst_en",
+    "body": [
+      "// DFF: sync reset, enable",
+      "always_ff @(posedge ${1:/* CLOCK */})",
+      "  if (${2:/* RESET */})",
+      "    ${3:/* Q */} <= ${4:/* RESET VALUE*/};",
+      "  else if (${5:/* ENABLE */})",
+      "    ${3:/* Q */} <= ${5:/* D */};",
+      "  else",
+      "    ${3:/* Q */} <= ${3:/* Q */};",
+      "$0"
+    ],
+    "description": "DFF with synch reset and enable"
+  },
+
+  "dff_norst_en": {
+    "prefix": "dff_norst_en",
+    "body": [
+      "// DFF: no reset, enable",
+      "always_ff @(posedge ${1:/* CLOCK */})",
+      "  if (${2:/* ENABLE */})",
+      "    ${3:/* Q */} <= ${4:/* D */};",
+      "  else",
+      "    ${3:/* Q */} <= ${3:/* Q */};",
+      "$0"
+    ],
+    "description": "DFF with no reset and enable"
+  },
+
+  "latch": {
+    "prefix": "latch",
+    "body": [
+      "always_latch $0;"
+    ],
+    "description": "Latch"
+  },
+
+  "mux": {
+    "prefix": "mux",
+    "body": [
+      "always_comb ${1:/* Out */} = ${2:/* COND */} ? ${3:/* TRUE */} : ${4:/* FALSE */};"
+    ],
+    "description": "Multiplexor"
+  },
+
+  "instance": {
+    "prefix": "instance",
+    "body": [
+      "// {{{ ${1:/* MODULE NAME */} - u_${2:/* INSTANCE NAME */}()",
+      "${1:/* MODULE NAME */} #(",
+      "  ${3:/* PARAMETER1 */}",
+      ", ${4:/* PARAMETER2 */}",
+      ") u_${2:/* INSTANCE NAME */} (",
+      "  ${5:/* IO1 */}",
+      ", ${6:/* IO2 */}",
+      ");",
+      "// }}}",
+      "$0"
+    ],
+    "description": "Instantiate a module"
+  }
+}

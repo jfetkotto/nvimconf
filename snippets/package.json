@@ -1,0 +1,14 @@
+{
+  "name": "samsnips",
+  "engines": {
+    "vscode": "^1.11.0"
+  },
+  "contributes": {
+    "snippets": [
+      {
+        "language": "systemverilog",
+        "path": "./lang/systemverilog.json"
+      }
+    ]
+  }
+}
