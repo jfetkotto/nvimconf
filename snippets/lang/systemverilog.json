@@ -103,6 +103,20 @@
     "description": "Latch"
   },
 
+  "tflop": {
+    "prefix": "tflop",
+    "body": [
+      "// TFF: no reset",
+      "always_ff @(posedge ${1:/* CLOCK */})",
+      "  if (${2:/* TOGGLE */})",
+      "    ${3:/* Q */} <= ~${3:/* Q */};",
+      "  else",
+      "    ${3:/* Q */} <= ${3:/* Q */};",
+      "$0"
+    ],
+    "description": "Toggle FF"
+  },
+
   "mux": {
     "prefix": "mux",
     "body": [
