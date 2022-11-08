@@ -90,6 +90,9 @@ vim.api.nvim_set_keymap('n', '<leader>w', ':bn<CR>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>q', ':bdelete<CR>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<C-f>', ':NERDTreeToggle<CR>', {noremap = true})
 
+-- No wrap
+vim.wo.wrap = false
+
 -- Highlight on yank
 vim.cmd [[
   augroup YankHighlight
