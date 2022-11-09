@@ -21,7 +21,8 @@ require "paq" {
 
 -- Auto fold markers
 vim.wo.foldmethod = "marker"
-
+-- Relative number
+vim.o.relativenumber = true
 --Set highlight on search
 vim.o.hlsearch = false
 --Make line numbers default
