@@ -3,11 +3,18 @@
     "prefix": "section",
     "body": [
       "// {{{ ${1:Section}",
-      "$2",
-      "// }}}",
       "$0"
     ],
     "description": "Foldable section"
+  },
+
+  "secend": {
+    "prefix": "secend",
+    "body": [
+      "// }}}",
+      "$0"
+    ],
+    "description": "Foldable section end"
   },
 
   "dff_norst_noen": {
