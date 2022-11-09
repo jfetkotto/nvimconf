@@ -9,6 +9,7 @@ require "paq" {
         "hrsh7th/cmp-nvim-lsp";
         "hrsh7th/cmp-buffer";
         "hrsh7th/cmp-path";
+        "tpope/vim-fugitive";
         "saadparwaiz1/cmp_luasnip";
         "L3MON4D3/LuaSnip";
         "ntpeters/vim-better-whitespace";
@@ -33,7 +34,6 @@ vim.o.breakindent = true
 vim.opt.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
-
 --Decrease update time
 vim.o.updatetime = 250
 vim.wo.signcolumn = 'yes'
