@@ -89,7 +89,7 @@ vim.g.maplocalleader = ' '
 
 vim.api.nvim_set_keymap('n', '<leader>w', ':bn<CR>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>q', ':bdelete<CR>', {noremap = true})
-vim.api.nvim_set_keymap('n', '<C-f>', ':NERDTreeToggle<CR>', {noremap = true})
+vim.api.nvim_set_keymap('n', '<leader>f', ':NERDTreeToggle<CR>', {noremap = true})
 
 -- No wrap
 vim.wo.wrap = false
