@@ -1,5 +1,5 @@
 {
-  "section": {
+  "sec": {
     "prefix": "section",
     "body": [
       "// {{{ ${1:Section}",
@@ -8,7 +8,7 @@
     "description": "Foldable section"
   },
 
-  "secend": {
+  "end": {
     "prefix": "secend",
     "body": [
       "// }}}",
