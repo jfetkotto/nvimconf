@@ -1,4 +1,6 @@
 -- init.lua
+
+-- {{{ Plugins
 require "paq" {
         "savq/paq-nvim";
         "nvim-lualine/lualine.nvim";
@@ -18,27 +20,21 @@ require "paq" {
         -- Colourschemes
         "nanotech/jellybeans.vim";
 }
+-- }}}
 
--- Auto fold markers
+-- {{{ Settings
 vim.wo.foldmethod = "marker"
--- Relative number
 vim.o.relativenumber = true
---Set highlight on search
-vim.o.hlsearch = false
---Make line numbers default
+vim.o.hlsearch = true
+vim.o.incsearch = true
 vim.wo.number = true
---Enable mouse mode
 vim.o.mouse = 'a'
---Enable break indent
 vim.o.breakindent = true
---Save undo history
 vim.opt.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
---Decrease update time
 vim.o.updatetime = 250
 vim.wo.signcolumn = 'yes'
-
 vim.o.cursorline = true
 vim.o.colorcolumn = "80"
 vim.o.clipboard = "unnamedplus"
@@ -47,7 +43,6 @@ vim.o.swapfile = false
 vim.o.writebackup = false
 vim.o.splitright = true
 vim.o.splitbelow = true
-
 vim.o.tabstop = 2
 vim.bo.tabstop = 2
 vim.o.softtabstop = 2
@@ -58,8 +53,16 @@ vim.o.autoindent = true
 vim.bo.autoindent = true
 vim.o.expandtab = true
 vim.bo.expandtab = true
+vim.o.termguicolors = true
+vim.g.rainbow_active = 1
+vim.cmd[[colorscheme jellybeans]]
+vim.o.completeopt = 'menu,menuone,noselect'
+vim.g.better_whitespace_enabled = 1
+vim.g.strip_whitespace_on_save = 1
+vim.wo.wrap = false
+-- }}}
 
--- Disable various builtin plugins in Vim that bog down speed
+-- {{{ Disable various builtin plugins in Vim that bog down speed
 vim.g.loaded_matchparen = 1
 vim.g.loaded_matchit = 1
 vim.g.loaded_logiPat = 1
@@ -74,13 +77,7 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_tutor_mode_plugin = 1
 vim.g.loaded_remote_plugins = 1
-
---Set colorscheme
-vim.o.termguicolors = true
-vim.g.rainbow_active = 1
-vim.cmd[[colorscheme jellybeans]]
--- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menu,menuone,noselect'
+-- }}}
 
 -- Space as leader
 vim.api.nvim_set_keymap('', '<Space>', '<Nop>', { noremap = true, silent = true })
@@ -91,8 +88,7 @@ vim.api.nvim_set_keymap('n', '<leader>w', ':bn<CR>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>q', ':bdelete<CR>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>f', ':NERDTreeToggle<CR>', {noremap = true})
 
--- No wrap
-vim.wo.wrap = false
+vim.api.nvim_set_keymap('n', '<CR>', ':noh<CR><CR>', {noremap = true})
 
 -- Highlight on yank
 vim.cmd [[
@@ -119,7 +115,7 @@ require('gitsigns').setup {
   },
 }
 
--- LSPs
+-- {{{ LSPs
 local lspconfig = require 'lspconfig'
 local on_attach = function(_, bufnr)
   local opts = { noremap = true, silent = true }
@@ -149,11 +145,12 @@ for _, lsp in pairs(servers) do
     capabilities = capabilities,
   }
 end
+-- }}}
+
 -- luasnip
 local luasnip = require 'luasnip'
 
-
--- nvim-cmp
+-- {{{ nvim-cmp
 local cmp = require 'cmp'
 require("luasnip/loaders/from_vscode").load({ paths = "./snippets" })
 
@@ -198,13 +195,12 @@ cmp.setup({
     { name = 'luasnip' },
   },
 })
-
-vim.g.better_whitespace_enabled = 1
-vim.g.strip_whitespace_on_save = 1
+-- }}}
 
 -- Comment <gc> to comment
 require('Comment').setup()
--- lualine
+
+--  {{{ lualine
 require('lualine').setup {
   options = {
     icons_enabled = false,
@@ -240,8 +236,10 @@ require('lualine').setup {
   },
   extensions = {}
 }
+-- }}}
 
--- Filetype specific settings
+
+-- {{{ Filetype specific settings
 local utils = require('utils')
 utils.create_augroup({
   {'FileType', '*', 'setlocal', 'shiftwidth=2'},
@@ -249,3 +247,4 @@ utils.create_augroup({
   {'FileType', 'c,cpp', 'setlocal', 'shiftwidth=8'},
   {'FileType', 'python', 'setlocal', 'shiftwidth=4'}
 }, 'Tab2')
+-- }}}
