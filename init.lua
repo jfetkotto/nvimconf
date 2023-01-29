@@ -1,6 +1,6 @@
 -- init.lua
 
--- {{{ Plugins
+-- {{{ Plugin
 require "paq" {
         "savq/paq-nvim";
         "nvim-lualine/lualine.nvim";
@@ -18,7 +18,7 @@ require "paq" {
         "lewis6991/gitsigns.nvim";
         "numToStr/Comment.nvim";
         -- Colourschemes
-        "nanotech/jellybeans.vim";
+        "sainnhe/gruvbox-material"
 }
 -- }}}
 
@@ -55,10 +55,10 @@ vim.o.expandtab = true
 vim.bo.expandtab = true
 vim.o.termguicolors = true
 vim.g.rainbow_active = 1
-vim.cmd[[colorscheme jellybeans]]
+vim.cmd[[colorscheme gruvbox-material]]
 vim.o.completeopt = 'menu,menuone,noselect'
 vim.g.better_whitespace_enabled = 1
-vim.g.strip_whitespace_on_save = 1
+-- vim.g.strip_whitespace_on_save = 1
 vim.wo.wrap = false
 -- }}}
 
@@ -84,7 +84,7 @@ vim.api.nvim_set_keymap('', '<Space>', '<Nop>', { noremap = true, silent = true 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-vim.api.nvim_set_keymap('n', '<leader>w', ':bn<CR>', {noremap = true})
+vim.api.nvim_set_keymap('n', '<leader><Tab>', ':bn<CR>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>q', ':bdelete<CR>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>f', ':NERDTreeToggle<CR>', {noremap = true})
 
@@ -98,7 +98,19 @@ vim.cmd [[
   augroup end
 ]]
 
---Map blankline
+-- Oooops :W -> :w
+vim.cmd "command! W noautocmd w"
+
+-- go to last loc when opening a buffer
+vim.api.nvim_create_autocmd(
+  "BufReadPost",
+  { command = [[if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif]] }
+)
+
+-- Remove whitespace on save
+vim.cmd "autocmd BufWritePre * %s/\\s\\+$//e"
+
+-- Map blankline
 vim.g.indent_blankline_char = '┊'
 vim.g.indent_blankline_filetype_exclude = { 'help', 'packer' }
 vim.g.indent_blankline_buftype_exclude = { 'terminal', 'nofile' }
@@ -113,10 +125,55 @@ require('gitsigns').setup {
     topdelete = { text = '‾' },
     changedelete = { text = '~' },
   },
+
+  on_attach = function(buffnr)
+    local gs = package.loaded.gitsigns
+
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = buffnr
+      vim.keymap.set(mode, l, r, opts)
+    end
+
+        -- Navigation
+    map('n', ']c', function()
+      if vim.wo.diff then return ']c' end
+      vim.schedule(function() gs.next_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+
+    map('n', '[c', function()
+      if vim.wo.diff then return '[c' end
+      vim.schedule(function() gs.prev_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+
+    -- Actions
+    map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
+    map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+    map('n', '<leader>hs', gs.stage_buffer)
+    map('n', '<leader>hu', gs.undo_stage_hunk)
+    map('n', '<leader>hR', gs.reset_buffer)
+    map('n', '<leader>hp', gs.preview_hunk)
+    map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+    map('n', '<leader>tb', gs.toggle_current_line_blame)
+    map('n', '<leader>hd', gs.diffthis)
+    map('n', '<leader>hD', function() gs.diffthis('~') end)
+    map('n', '<leader>td', gs.toggle_deleted)
+
+    -- Text object
+    map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+  end
 }
 
 -- {{{ LSPs
 local lspconfig = require 'lspconfig'
+local opts = { noremap=true, silent=true }
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+vim.keymap.set('n', '<leader>d', vim.diagnostic.setloclist, opts)
+
 local on_attach = function(_, bufnr)
   local opts = { noremap = true, silent = true }
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -197,7 +254,7 @@ cmp.setup({
 })
 -- }}}
 
--- Comment <gc> to comment
+-- -- Comment <gc> to comment
 require('Comment').setup()
 
 --  {{{ lualine
@@ -238,13 +295,15 @@ require('lualine').setup {
 }
 -- }}}
 
-
 -- {{{ Filetype specific settings
 local utils = require('utils')
 utils.create_augroup({
   {'FileType', '*', 'setlocal', 'shiftwidth=2'},
   {'FileType', 'rust', 'setlocal', 'shiftwidth=4'},
-  {'FileType', 'c,cpp', 'setlocal', 'shiftwidth=8'},
-  {'FileType', 'python', 'setlocal', 'shiftwidth=4'}
+  {'FileType', 'c', 'setlocal', 'shiftwidth=8'},
+  {'Filetype', 'cpp', 'setlocal', 'shiftwidth=4'},
+  {'FileType', 'python', 'setlocal', 'shiftwidth=4'},
+  {'FileType', 'make','setlocal', 'softtabstop=0'},
+  {'FileType', 'make', 'setlocal', 'noexpandtab'}
 }, 'Tab2')
 -- }}}
