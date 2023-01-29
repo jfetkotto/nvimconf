@@ -1,151 +1,116 @@
 {
-  "sec": {
-    "prefix": "section",
-    "body": [
-      "// {{{ ${1:Section}",
-      "$0"
-    ],
-    "description": "Foldable section"
-  },
-
-  "end": {
-    "prefix": "secend",
-    "body": [
-      "// }}}",
-      "$0"
-    ],
-    "description": "Foldable section end"
-  },
-
   "dff_norst_noen": {
-    "prefix": "dff_norst_noen",
-    "body": [
-      "// DFF: no reset, no enable",
-      "always_ff @(posedge ${1:/* CLOCK */})",
-      "  ${2:/* Q */} <= ${3:/* D */};",
-      "$0"
-    ],
-    "description": "DFF with no reset and no enable"
-  },
-
-  "dff_arst_noen": {
-    "prefix": "dff_arst_noen",
-    "body": [
-      "// DFF: async reset, no enable",
-      "always_ff @(posedge ${1:/* CLOCK */}, posedge ${2:/* RESET */})",
-      "  if (${2:/* RESET */})",
-      "    ${3:/* Q */} <= ${4:/* RESET VALUE */};",
-      "  else",
-      "    ${3:/* Q */} <= ${5:/* D */};",
-      "$0"
-    ],
-    "description": "DFF with async reset and no enable"
-  },
-
-  "dff_srst_noen": {
-    "prefix": "dff_srst_noen",
-    "body": [
-      "// DFF: synch reset, no enable",
-      "always_ff @(posedge ${1:/* CLOCK */})",
-      "  if (${2:/* RESET */})",
-      "    ${3:/* Q */} <= ${4:/* RESET VALUE */};",
-      "  else",
-      "    ${3:/* Q */} <= ${5:/* D */};",
-      "$0"
-    ],
-    "description": "DFF with synch reset and no enable"
-  },
-
-  "dff_arst_en": {
-    "prefix": "dff_arst_en",
+    "prefix": ["dff_norst_noen"],
     "body" : [
-      "// DFF: async reset, enable",
-      "always_ff @(posedge ${1:/* CLOCK */}, posedge ${2:/* RESET */})",
-      "  if (${2:/* RESET */})",
-      "    ${3:/* Q */} <= ${4:/* RESET VALUE*/};",
-      "  else if (${5:/* ENABLE */})",
-      "    ${3:/* Q */} <= ${6:/* D */};",
-      "  else",
-      "    ${3:/* Q */} <= ${3: /* Q */};",
+      "// DFF: .ck($1)",
+      "//      .d($3)",
+      "//      .q($2)",
+      "always_ff @(posedge ${1:ck})",
+      "  ${2:q} <= ${3:d};",
+      "",
       "$0"
     ],
-    "description": "DFF with async reset and enable"
-  },
-
-  "dff_srst_en": {
-    "prefix": "dff_srst_en",
-    "body": [
-      "// DFF: sync reset, enable",
-      "always_ff @(posedge ${1:/* CLOCK */})",
-      "  if (${2:/* RESET */})",
-      "    ${3:/* Q */} <= ${4:/* RESET VALUE*/};",
-      "  else if (${5:/* ENABLE */})",
-      "    ${3:/* Q */} <= ${5:/* D */};",
-      "  else",
-      "    ${3:/* Q */} <= ${3:/* Q */};",
-      "$0"
-    ],
-    "description": "DFF with synch reset and enable"
+    "description": "DFF: No reset, No enable"
   },
 
   "dff_norst_en": {
-    "prefix": "dff_norst_en",
+    "prefix": ["dff_norst_en"],
     "body": [
-      "// DFF: no reset, enable",
-      "always_ff @(posedge ${1:/* CLOCK */})",
-      "  if (${2:/* ENABLE */})",
-      "    ${3:/* Q */} <= ${4:/* D */};",
-      "  else",
-      "    ${3:/* Q */} <= ${3:/* Q */};",
+      "// DFF: .ck($1)",
+      "//      .en($2)",
+      "//      .d($4)",
+      "//      .q($3)",
+      "always_ff @(posedge ${1:ck})",
+      "  if (${2:en}) ${3:q} <= ${4:d};",
+      "  else $3 <= $3;",
+      "",
       "$0"
     ],
-    "description": "DFF with no reset and enable"
+    "description": "DFF: No reset, Enable"
   },
 
-  "latch": {
-    "prefix": "latch",
+  "dff_arst_noen": {
+    "prefix": ["dff_arst_noen"],
     "body": [
-      "always_latch $0;"
-    ],
-    "description": "Latch"
-  },
-
-  "tflop": {
-    "prefix": "tflop",
-    "body": [
-      "// TFF: no reset",
-      "always_ff @(posedge ${1:/* CLOCK */})",
-      "  if (${2:/* TOGGLE */})",
-      "    ${3:/* Q */} <= ~${3:/* Q */};",
-      "  else",
-      "    ${3:/* Q */} <= ${3:/* Q */};",
+      "// DFF: .ck($1)",
+      "//      .arst($2)",
+      "//      .d($5)",
+      "//      .q($3)",
+      "always_ff @(posedge ${1:ck}, posedge ${2:arst})",
+      "  if ($2) ${3:q} <= ${4:reset value};",
+      "  else $3 <= ${5:d};",
+      "",
       "$0"
     ],
-    "description": "Toggle FF"
+    "description": "DFF: Async reset, No enable"
   },
 
-  "mux": {
-    "prefix": "mux",
+  "dff_arst_en": {
+    "prefix": ["dff_arst_en"],
     "body": [
-      "always_comb ${1:/* Out */} = ${2:/* COND */} ? ${3:/* TRUE */} : ${4:/* FALSE */};"
-    ],
-    "description": "Multiplexor"
-  },
-
-  "instance": {
-    "prefix": "instance",
-    "body": [
-      "// {{{ ${1:/* MODULE NAME */} - u_${2:/* INSTANCE NAME */}()",
-      "${1:/* MODULE NAME */} #(",
-      "  ${3:/* PARAMETER1 */}",
-      ", ${4:/* PARAMETER2 */}",
-      ") u_${2:/* INSTANCE NAME */} (",
-      "  ${5:/* IO1 */}",
-      ", ${6:/* IO2 */}",
-      ");",
-      "// }}}",
+      "// DFF: .ck($1)",
+      "//      .arst($2)",
+      "//      .en($5)",
+      "//      .d($6)",
+      "//      .q($3)",
+      "always_ff @(posedge ${1:ck}, posedge ${2:arst})",
+      "  if ($2) ${3:q} <= ${4:reset value};",
+      "  else if (${5:en}) $3 <= ${6:d};",
+      "  else $3 <= $3;",
+      "",
       "$0"
     ],
-    "description": "Instantiate a module"
+    "description": "DFF: Async reset, Enable"
+  },
+
+  "dff_srst_noen": {
+    "prefix": ["dff_srst_noen"],
+    "body": [
+      "// DFF: .ck($1)",
+      "//      .srst($2)",
+      "//      .d($5)",
+      "//      .q($3)",
+      "always_ff @(posedge ${1:ck})",
+      "  if (${2:srst}) ${3:q} <= ${4:reset value};",
+      "  else $3 <= ${5:d};",
+      "",
+      "$0"
+    ],
+    "description": "DFF: Sync reset, No enable"
+
+  },
+
+  "dff_srst_en" : {
+    "prefix": ["dff_srst_en"],
+    "body": [
+      "// DFF: .ck($1)",
+      "//      .srst($2)",
+      "//      .en($5)",
+      "//      .d($6)",
+      "//      .q($3)",
+      "always_ff @(posedge ${1:ck})",
+      "  if (${2:srst}) ${3:q} <= ${4:reset value};",
+      "  else if (${5:en}) $3 <= ${6:d};",
+      "  else $3 <= $3;",
+      "",
+      "$0"
+    ],
+    "description": "DFF: Sync reset, Enable"
+  },
+
+  "tog_arst": {
+    "prefix": ["tflop_arst"],
+    "body": [
+      "// TFF: .ck($1)",
+      "//      .arst($2)",
+      "//      .t($5)",
+      "//      .q($3)",
+      "always_ff @(posedge ${1:ck}, posedge ${2:arst})",
+      "  if ($2) ${3:q} <= ${4:reset value};",
+      "  else $3 <= ${5:t} ? ~$3 : $3;",
+      "",
+      "$0"
+    ],
+    "description": "TFF: Async reset"
   }
 }
