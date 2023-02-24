@@ -195,7 +195,7 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-local servers = { 'svls', 'rust_analyzer', 'clangd' }
+local servers = { 'svls', 'clangd' }
 for _, lsp in pairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
@@ -298,11 +298,11 @@ require('lualine').setup {
 -- {{{ Filetype specific settings
 local utils = require('utils')
 utils.create_augroup({
-  {'FileType', '*', 'setlocal', 'shiftwidth=2'},
-  {'FileType', 'rust', 'setlocal', 'shiftwidth=4'},
-  {'FileType', 'c', 'setlocal', 'shiftwidth=8'},
-  {'Filetype', 'cpp', 'setlocal', 'shiftwidth=4'},
-  {'FileType', 'python', 'setlocal', 'shiftwidth=4'},
+  {'FileType', '*', 'setlocal', 'shiftwidth=2', 'tabstop=2'},
+  {'FileType', 'rust', 'setlocal', 'shiftwidth=4', 'tabstop=4'},
+  {'FileType', 'c', 'setlocal', 'shiftwidth=8', 'tabstop=8', 'noexpandtab'},
+  {'Filetype', 'cpp', 'setlocal', 'shiftwidth=8', 'tabstop=8', 'noexpandtab'},
+  {'FileType', 'python', 'setlocal', 'shiftwidth=4', 'tabstop=4'},
   {'FileType', 'make','setlocal', 'softtabstop=0'},
   {'FileType', 'make', 'setlocal', 'noexpandtab'}
 }, 'Tab2')
