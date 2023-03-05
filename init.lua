@@ -17,8 +17,9 @@ require "paq" {
         "ntpeters/vim-better-whitespace";
         "lewis6991/gitsigns.nvim";
         "numToStr/Comment.nvim";
+        "nvim-treesitter/nvim-treesitter";
         -- Colourschemes
-        "sainnhe/gruvbox-material"
+        "catppuccin/nvim";
 }
 -- }}}
 
@@ -55,10 +56,9 @@ vim.o.expandtab = true
 vim.bo.expandtab = true
 vim.o.termguicolors = true
 vim.g.rainbow_active = 1
-vim.cmd[[colorscheme gruvbox-material]]
+vim.cmd[[colorscheme catppuccin-frappe]]
 vim.o.completeopt = 'menu,menuone,noselect'
 vim.g.better_whitespace_enabled = 1
--- vim.g.strip_whitespace_on_save = 1
 vim.wo.wrap = false
 -- }}}
 
@@ -166,6 +166,31 @@ require('gitsigns').setup {
   end
 }
 
+-- {{{ Treesitter
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "c", "cpp", "vim", "verilog", "rust" },
+  sync_install = false,
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+  auto_install = false,
+
+  highlight = {
+    enable = true,
+
+    -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
+    disable = function(lang, buf)
+        local max_filesize = 100 * 1024 -- 100 KB
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+        if ok and stats and stats.size > max_filesize then
+            return true
+        end
+    end,
+
+    additional_vim_regex_highlighting = false,
+  },
+}
+-- }}}
+
 -- {{{ LSPs
 local lspconfig = require 'lspconfig'
 local opts = { noremap=true, silent=true }
@@ -195,7 +220,7 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-local servers = { 'svls', 'clangd' }
+local servers = { 'svls', 'clangd', 'rust_analyzer' }
 for _, lsp in pairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
