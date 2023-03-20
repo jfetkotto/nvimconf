@@ -168,7 +168,7 @@ require('gitsigns').setup {
 
 -- {{{ Treesitter
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "c", "cpp", "vim", "verilog", "rust" },
+  ensure_installed = { "c", "cpp", "vim", "verilog" },
   sync_install = false,
   -- Automatically install missing parsers when entering buffer
   -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
@@ -220,7 +220,7 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-local servers = { 'svls', 'clangd', 'rust_analyzer' }
+local servers = { 'svls', 'clangd' }
 for _, lsp in pairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
