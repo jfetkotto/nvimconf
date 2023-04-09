@@ -19,7 +19,7 @@ require "paq" {
         "numToStr/Comment.nvim";
         "nvim-treesitter/nvim-treesitter";
         -- Colourschemes
-        "catppuccin/nvim";
+        "sainnhe/everforest";
 }
 -- }}}
 
@@ -56,10 +56,11 @@ vim.o.expandtab = true
 vim.bo.expandtab = true
 vim.o.termguicolors = true
 vim.g.rainbow_active = 1
-vim.cmd[[colorscheme catppuccin-frappe]]
+vim.cmd[[colorscheme everforest]]
 vim.o.completeopt = 'menu,menuone,noselect'
 vim.g.better_whitespace_enabled = 1
 vim.wo.wrap = false
+vim.api.nvim_set_hl(0, 'Comment', { italic=true })
 -- }}}
 
 -- {{{ Disable various builtin plugins in Vim that bog down speed
@@ -168,7 +169,7 @@ require('gitsigns').setup {
 
 -- {{{ Treesitter
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "c", "cpp", "vim", "verilog" },
+  ensure_installed = { "c", "cpp", "vim", "verilog", "rust" },
   sync_install = false,
   -- Automatically install missing parsers when entering buffer
   -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
@@ -220,7 +221,7 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-local servers = { 'svls', 'clangd' }
+local servers = { 'svls', 'clangd', 'rust_analyzer' }
 for _, lsp in pairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
