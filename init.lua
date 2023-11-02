@@ -60,9 +60,11 @@ vim.o.expandtab = true
 vim.bo.expandtab = true
 vim.o.termguicolors = true
 vim.g.rainbow_active = 1
+vim.cmd[[colorscheme everforest]]
 vim.o.completeopt = 'menu,menuone,noselect'
 vim.g.better_whitespace_enabled = 1
 vim.wo.wrap = false
+vim.api.nvim_set_hl(0, 'Comment', { italic=true })
 -- }}}
 
 -- {{{ Disable various builtin plugins in Vim that bog down speed
