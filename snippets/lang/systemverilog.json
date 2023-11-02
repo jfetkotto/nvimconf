@@ -78,7 +78,7 @@
     "body": [
       "always_ff @(posedge ${1:ck}, posedge ${2:arst})",
       "  if ($2) ${3:q} <= ${4:reset value};",
-      "  else $3 <= ${5:t} ? ~$3 : $3;",
+      "  else $3 <= ${5:t} ? !$3 : $3;",
       "",
       "$0"
     ],

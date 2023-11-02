@@ -24,6 +24,7 @@ require "paq" {
         "catppuccin/nvim";
         "sainnhe/everforest";
         "junegunn/seoul256.vim";
+        "NLKNguyen/papercolor-theme";
 }
 -- }}}
 
@@ -60,7 +61,6 @@ vim.o.expandtab = true
 vim.bo.expandtab = true
 vim.o.termguicolors = true
 vim.g.rainbow_active = 1
-vim.cmd[[colorscheme everforest]]
 vim.o.completeopt = 'menu,menuone,noselect'
 vim.g.better_whitespace_enabled = 1
 vim.wo.wrap = false
@@ -225,7 +225,7 @@ require("todo-comments").setup {
 
 -- {{{ Treesitter
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "c", "cpp", "vim", "verilog", "rust" },
+  ensure_installed = { "c", "cpp", "vim", "rust" },
   sync_install = false,
   -- Automatically install missing parsers when entering buffer
   -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
@@ -238,12 +238,18 @@ require'nvim-treesitter.configs'.setup {
     disable = function(lang, buf)
         local max_filesize = 100 * 1024 -- 100 KB
         local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-        if ok and stats and stats.size > max_filesize then
+        if (ok and stats and stats.size > max_filesize) or (lang == "verilog")  then
             return true
         end
     end,
 
     additional_vim_regex_highlighting = false,
+  },
+
+  rainbow = {
+    enable = true,
+    extended_mode = true,
+    max_file_lines = nil,
   },
 }
 -- }}}
@@ -344,8 +350,8 @@ require('lualine').setup {
   options = {
     icons_enabled = false,
     theme = 'auto',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
     disabled_filetypes = {},
     always_divide_middle = true,
   },
