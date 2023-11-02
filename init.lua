@@ -18,8 +18,12 @@ require "paq" {
         "lewis6991/gitsigns.nvim";
         "numToStr/Comment.nvim";
         "nvim-treesitter/nvim-treesitter";
+        "nvim-lua/plenary.nvim";
+        "folke/todo-comments.nvim";
         -- Colourschemes
         "catppuccin/nvim";
+        "sainnhe/everforest";
+        "junegunn/seoul256.vim";
 }
 -- }}}
 
@@ -56,7 +60,6 @@ vim.o.expandtab = true
 vim.bo.expandtab = true
 vim.o.termguicolors = true
 vim.g.rainbow_active = 1
-vim.cmd[[colorscheme catppuccin-frappe]]
 vim.o.completeopt = 'menu,menuone,noselect'
 vim.g.better_whitespace_enabled = 1
 vim.wo.wrap = false
@@ -165,6 +168,58 @@ require('gitsigns').setup {
     map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
   end
 }
+
+-- todo-comments
+require("todo-comments").setup {
+  signs = false,
+  sign_priority = 8,
+  keywords = {
+    FIX = { icon = " ", color = "error", alt = { "FIXME", "BUG", "FIXIT", "ISSUE" } },
+    TODO = { icon = " ", color = "info" },
+    HACK = { icon = " ", color = "warning" },
+    WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX"} },
+  },
+  gui_style = {
+    fg = "NONE",
+    bg = "BOLD",
+  },
+  merge_keywords = true,
+    highlight = {
+    multiline = true,
+    multiline_pattern = "^.",
+    multiline_context = 10,
+    before = "",
+    keyword = "wide",
+    after = "fg",
+    pattern = [[.*<(KEYWORDS)\s*:]],
+    comments_only = true,
+    max_line_len = 400,
+    exclude = {},
+  },
+  -- colors = {
+  --   error = { "DiagnosticError", "ErrorMsg", "#DC2626" },
+  --   warning = { "DiagnosticWarn", "WarningMsg", "#FBBF24" },
+  --   info = { "DiagnosticInfo", "#2563EB" },
+  --   hint = { "DiagnosticHint", "#10B981" },
+  --   default = { "Identifier", "#7C3AED" },
+  --   test = { "Identifier", "#FF00FF" }
+  -- },
+  search = {
+    command = "rg",
+    args = {
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+    },
+    -- regex that will be used to match keywords.
+    -- don't replace the (KEYWORDS) placeholder
+    pattern = [[\b(KEYWORDS):]], -- ripgrep regex
+    -- pattern = [[\b(KEYWORDS)\b]], -- match without the extra colon. You'll likely get false positives
+  },
+}
+
 
 -- {{{ Treesitter
 require'nvim-treesitter.configs'.setup {
@@ -325,6 +380,7 @@ local utils = require('utils')
 utils.create_augroup({
   {'FileType', '*', 'setlocal', 'shiftwidth=2', 'tabstop=2'},
   {'FileType', 'rust', 'setlocal', 'shiftwidth=4', 'tabstop=4'},
+  {'FileType', 'lua', 'setlocal', 'shiftwidth=4', 'tabstop=4'},
   {'FileType', 'c', 'setlocal', 'shiftwidth=8', 'tabstop=8', 'noexpandtab'},
   {'Filetype', 'cpp', 'setlocal', 'shiftwidth=8', 'tabstop=8', 'noexpandtab'},
   {'FileType', 'python', 'setlocal', 'shiftwidth=4', 'tabstop=4'},
@@ -332,3 +388,5 @@ utils.create_augroup({
   {'FileType', 'make', 'setlocal', 'noexpandtab'}
 }, 'Tab2')
 -- }}}
+
+vim.cmd[[colorscheme everforest]]
