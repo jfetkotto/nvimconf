@@ -20,11 +20,14 @@ require "paq" {
         "nvim-treesitter/nvim-treesitter";
         "nvim-lua/plenary.nvim";
         "folke/todo-comments.nvim";
+        "nvim-telescope/telescope.nvim";
         -- Colourschemes
         "catppuccin/nvim";
         "sainnhe/everforest";
         "junegunn/seoul256.vim";
         "NLKNguyen/papercolor-theme";
+        "rktjmp/lush.nvim";
+        "mcchrish/zenbones.nvim";
 }
 -- }}}
 
@@ -89,8 +92,9 @@ vim.api.nvim_set_keymap('', '<Space>', '<Nop>', { noremap = true, silent = true 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-vim.api.nvim_set_keymap('n', '<leader><Tab>', ':bn<CR>', {noremap = true})
-vim.api.nvim_set_keymap('n', '<leader>q', ':bdelete<CR>', {noremap = true})
+vim.api.nvim_set_keymap('n', '<leader>bn', ':bn<CR>', {noremap = true})
+vim.api.nvim_set_keymap('n', '<leader>bp', ':bp<CR>', {noremap = true})
+vim.api.nvim_set_keymap('n', '<leader>bq', ':bdelete<CR>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>f', ':NERDTreeToggle<CR>', {noremap = true})
 
 vim.api.nvim_set_keymap('n', '<CR>', ':noh<CR><CR>', {noremap = true})
@@ -254,6 +258,14 @@ require'nvim-treesitter.configs'.setup {
 }
 -- }}}
 
+-- {{{ Telescope
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+-- }}}
+
 -- {{{ LSPs
 local lspconfig = require 'lspconfig'
 local opts = { noremap=true, silent=true }
@@ -276,6 +288,7 @@ local on_attach = function(_, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>fp', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
   vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
 end
@@ -283,7 +296,7 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-local servers = { 'svls', 'clangd', 'rust_analyzer' }
+local servers = { 'verible', 'clangd', 'rust_analyzer' }
 for _, lsp in pairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
@@ -389,8 +402,8 @@ utils.create_augroup({
   {'FileType', '*', 'setlocal', 'shiftwidth=2', 'tabstop=2'},
   {'FileType', 'rust', 'setlocal', 'shiftwidth=4', 'tabstop=4'},
   {'FileType', 'lua', 'setlocal', 'shiftwidth=4', 'tabstop=4'},
-  {'FileType', 'c', 'setlocal', 'shiftwidth=8', 'tabstop=8', 'noexpandtab'},
-  {'Filetype', 'cpp', 'setlocal', 'shiftwidth=8', 'tabstop=8', 'noexpandtab'},
+  {'FileType', 'c', 'setlocal', 'shiftwidth=4', 'tabstop=4'},
+  {'Filetype', 'cpp', 'setlocal', 'shiftwidth=4', 'tabstop=4'},
   {'FileType', 'python', 'setlocal', 'shiftwidth=4', 'tabstop=4'},
   {'FileType', 'make','setlocal', 'softtabstop=0'},
   {'FileType', 'make', 'setlocal', 'noexpandtab'}
